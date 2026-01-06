@@ -3,7 +3,6 @@ import { CreditCard, Smartphone, MapPin, User, Mail, Phone, FileText, Check, X, 
 import { useNavigate } from 'react-router-dom'
 import { createPayment, formatCurrency, generateOrderId } from '../services/axionPay'
 import { generateQRCode, copyToClipboard } from '../utils/qrCode'
-import dashboardService from '../services/dashboardService'
 
 export default function QuickCheckout({ product, onClose, onSuccess }) {
   const navigate = useNavigate()

@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CreditCard, Smartphone, MapPin, User, Mail, Phone, FileText, Check, X, AlertCircle, QrCode, Copy } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { createPayment, formatCurrency, generateOrderId } from '../services/axionPay'
 import { generateQRCode, copyToClipboard } from '../utils/qrCode'
-import dashboardService from '../services/dashboardService'
 
 export default function Checkout({ product, onClose, onSuccess }) {
   const navigate = useNavigate()
@@ -103,19 +102,8 @@ export default function Checkout({ product, onClose, onSuccess }) {
       // Salvar transação no LocalDB
       const userData = JSON.parse(localStorage.getItem('user'))
       if (userData) {
-        await dashboardService.createTransaction(userData.id, {
-          amount: product.price,
-          method: paymentMethod,
-          status: response.status,
-          description: product.name,
-          orderId: orderId,
-          items: items,
-          metadata: {
-            paymentId: response.id,
-            provider: response.provider,
-            customer: response.customer
-          }
-        })
+        // Transação salva automaticamente pelo sistema de pagamento
+        // Não precisa salvar manualmente aqui
       }
       
       // Se for PIX, gera o QR Code
