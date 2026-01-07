@@ -19,7 +19,7 @@ export default function Login() {
     setTimeout(() => {
       localStorage.setItem('isLoggedIn', 'true')
       localStorage.setItem('user', JSON.stringify({
-        id: 'demo_user_123', // ID fixo para consistência
+        id: 'demo_user_123',
         name: 'Usuário Demo',
         email: formData.email,
         plan: 'free'
@@ -61,7 +61,8 @@ export default function Login() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors"
+                  autoComplete="current-password"
+                  className="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors"
                   placeholder="seu@email.com"
                 />
               </div>
@@ -76,10 +77,10 @@ export default function Login() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  autoComplete="current-password"
                   required
+                  autoComplete="current-password"
                   className="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-green-500 focus:outline-none transition-colors"
-                  placeholder="••••••••"
+                  placeholder="•••••••••"
                 />
                 <button
                   type="button"
@@ -96,9 +97,12 @@ export default function Login() {
                 <input type="checkbox" className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-green-500 focus:ring-green-500" />
                 <span className="text-gray-300 text-sm">Lembrar-me</span>
               </label>
-              <a href="#" className="text-green-400 text-sm hover:text-green-300 transition-colors">
+              <button 
+                onClick={() => navigate('/forgot-password')}
+                className="text-green-400 text-sm hover:text-green-300 transition-colors"
+              >
                 Esqueceu a senha?
-              </a>
+              </button>
             </div>
 
             <button
@@ -120,17 +124,13 @@ export default function Login() {
           <div className="mt-6 text-center">
             <p className="text-gray-400">
               Não tem uma conta?{' '}
-              <a href="/register" className="text-green-400 hover:text-green-300 transition-colors font-semibold">
+              <button 
+                onClick={() => navigate('/register')}
+                className="text-green-400 hover:text-green-300 transition-colors font-semibold"
+              >
                 Cadastre-se
-              </a>
+              </button>
             </p>
-          </div>
-
-          {/* Demo Account */}
-          <div className="mt-6 p-4 bg-gray-800/50 border border-gray-700 rounded-xl">
-            <p className="text-gray-400 text-sm mb-2">Conta Demo:</p>
-            <p className="text-gray-300 text-sm">Email: demo@axionstore.com</p>
-            <p className="text-gray-300 text-sm">Senha: demo123</p>
           </div>
         </div>
       </div>

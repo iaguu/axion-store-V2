@@ -156,13 +156,13 @@ export default function Register() {
               />
               <label htmlFor="terms" className="text-gray-300 text-sm">
                 Eu concordo com os{' '}
-                <a href="#" className="text-green-400 hover:text-green-300 transition-colors">
-                  Termos de Uso
-                </a>{' '}
+                <button onClick={() => navigate('/forgot-password')} className="text-green-400 text-sm hover:text-green-300 transition-colors">
+                Esqueceu a senha?
+              </button>{' '}
                 e{' '}
-                <a href="#" className="text-green-400 hover:text-green-300 transition-colors">
+                <button onClick={() => navigate('/privacy')} className="text-green-400 hover:text-green-300 transition-colors">
                   Política de Privacidade
-                </a>
+                </button>
               </label>
             </div>
 
@@ -185,9 +185,12 @@ export default function Register() {
           <div className="mt-6 text-center">
             <p className="text-gray-400">
               Já tem uma conta?{' '}
-              <a href="/login" className="text-green-400 hover:text-green-300 transition-colors font-semibold">
+              <button 
+                onClick={() => navigate('/login')}
+                className="text-green-400 hover:text-green-300 transition-colors font-semibold"
+              >
                 Faça login
-              </a>
+              </button>
             </p>
           </div>
 

@@ -28,10 +28,10 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-4">Produtos</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Cards Marketplace</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Database Search</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Black Development</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Bots & Automação</a></li>
+              <li><button onClick={() => window.open('https://axionstore.com/cards', '_blank')} className="hover:text-white transition-colors">Cards Marketplace</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/database', '_blank')} className="hover:text-white transition-colors">Database Search</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/black', '_blank')} className="hover:text-white transition-colors">Black Development</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/bots', '_blank')} className="hover:text-white transition-colors">Bots & Automação</button></li>
             </ul>
           </div>
 
@@ -39,10 +39,10 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-4">Empresa</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Carreiras</a></li>
+              <li><button onClick={() => window.open('https://axionstore.com/about', '_blank')} className="hover:text-white transition-colors">Sobre Nós</button></li>
+              <li><button onClick={() => window.open('https://blog.axionstore.com', '_blank')} className="hover:text-white transition-colors">Blog</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/contact', '_blank')} className="hover:text-white transition-colors">Contato</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/careers', '_blank')} className="hover:text-white transition-colors">Carreiras</button></li>
             </ul>
           </div>
 
@@ -50,10 +50,10 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-4">Legal</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Privacidade</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Termos de Uso</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cookies</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Compliance</a></li>
+              <li><button onClick={() => window.open('https://axionstore.com/privacy', '_blank')} className="hover:text-white transition-colors">Privacidade</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/terms', '_blank')} className="hover:text-white transition-colors">Termos de Uso</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/cookies', '_blank')} className="hover:text-white transition-colors">Cookies</button></li>
+              <li><button onClick={() => window.open('https://axionstore.com/compliance', '_blank')} className="hover:text-white transition-colors">Compliance</button></li>
             </ul>
           </div>
         </div>
@@ -63,9 +63,24 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-400">
             <p>&copy; 2024 AXION STORE. Todos os direitos reservados.</p>
             <div className="flex gap-6 mt-4 sm:mt-0 items-center">
-              <a href="#" className="hover:text-white transition-colors">Twitter</a>
-              <a href="#" className="hover:text-white transition-colors">Discord</a>
-              <a href="#" className="hover:text-white transition-colors">Telegram</a>
+              <button 
+                onClick={() => window.open('https://twitter.com/axionstore', '_blank')}
+                className="hover:text-white transition-colors"
+              >
+                Twitter
+              </button>
+              <button 
+                onClick={() => window.open('https://discord.gg/axionstore', '_blank')}
+                className="hover:text-white transition-colors"
+              >
+                Discord
+              </button>
+              <button 
+                onClick={() => window.open('https://t.me/axionstore', '_blank')}
+                className="hover:text-white transition-colors"
+              >
+                Telegram
+              </button>
               <button
                 onClick={handleAdminAccess}
                 className="flex items-center gap-1 text-red-400 hover:text-red-300 transition-colors"
