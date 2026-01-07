@@ -26,6 +26,8 @@ import {
   X
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import adminAuthService from '../services/adminAuthService'
+import adminService from '../services/adminService'
 
 export default function AdminPanel() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -33,42 +35,74 @@ export default function AdminPanel() {
   const [admin, setAdmin] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedUsers, setSelectedUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  // Estados para dados dinâmicos
+  const [overview, setOverview] = useState(null)
+  const [users, setUsers] = useState([])
+  const [transactions, setTransactions] = useState([])
+  const [services, setServices] = useState([])
+  const [securityAlerts, setSecurityAlerts] = useState(null)
+  const [systemStatus, setSystemStatus] = useState(null)
+  
   const navigate = useNavigate()
 
   useEffect(() => {
-    const isAdmin = localStorage.getItem('isAdmin')
-    const adminData = localStorage.getItem('admin')
-    
-    if (!isAdmin) {
+    // Verificar autenticação admin
+    if (!adminAuthService.checkAuth()) {
       navigate('/login')
       return
     }
     
-    if (adminData) {
-      setAdmin(JSON.parse(adminData))
-    }
+    const adminUser = adminAuthService.user
+    setAdmin(adminUser)
+    
+    // Carregar dados do painel
+    loadAdminData()
   }, [navigate])
 
+  const loadAdminData = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      // Carregar todos os dados em paralelo
+      const [overviewData, usersData, transactionsData, servicesData, securityData, systemData] = await Promise.all([
+        adminService.getOverview(),
+        adminService.getUsers(),
+        adminService.getTransactions(),
+        adminService.getServices(),
+        adminService.getSecurityAlerts(),
+        adminService.getSystemStatus()
+      ])
+      
+      setOverview(overviewData)
+      setUsers(usersData)
+      setTransactions(transactionsData)
+      setServices(servicesData)
+      setSecurityAlerts(securityData)
+      setSystemStatus(systemData)
+      
+    } catch (error) {
+      console.error('Erro ao carregar dados admin:', error)
+      setError('Não foi possível carregar os dados administrativos')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleLogout = () => {
-    localStorage.removeItem('isAdmin')
-    localStorage.removeItem('admin')
+    adminAuthService.logout()
     navigate('/')
   }
 
-  const adminStats = [
-    { label: 'Total Usuários', value: '52,847', change: '+18%', icon: Users, color: 'from-blue-500 to-blue-600' },
-    { label: 'Receita Mensal', value: 'R$ 487.290', change: '+32%', icon: DollarSign, color: 'from-green-500 to-green-600' },
-    { label: 'Cards Ativos', value: '124,892', change: '+24%', icon: CreditCard, color: 'from-purple-500 to-purple-600' },
-    { label: 'Taxa Conversão', value: '12.4%', change: '+3%', icon: TrendingUp, color: 'from-orange-500 to-orange-600' },
-  ]
-
-  const users = [
-    { id: 1, name: 'João Silva', email: 'joao@email.com', plan: 'vip', status: 'active', revenue: 'R$ 2.970', joinDate: '2024-01-15' },
-    { id: 2, name: 'Maria Santos', email: 'maria@email.com', plan: 'pro', status: 'active', revenue: 'R$ 970', joinDate: '2024-02-20' },
-    { id: 3, name: 'Pedro Costa', email: 'pedro@email.com', plan: 'free', status: 'active', revenue: 'R$ 0', joinDate: '2024-03-10' },
-    { id: 4, name: 'Ana Oliveira', email: 'ana@email.com', plan: 'pro', status: 'suspended', revenue: 'R$ 1.940', joinDate: '2024-01-25' },
-    { id: 5, name: 'Lucas Ferreira', email: 'lucas@email.com', plan: 'vip', status: 'active', revenue: 'R$ 2.970', joinDate: '2024-02-05' },
-  ]
+  const adminStats = overview ? [
+    { label: 'Total Usuários', value: overview.totalUsers.toLocaleString(), change: `+${(overview.activeUsers/overview.totalUsers*100).toFixed(1)}%`, icon: Users, color: 'from-blue-500 to-blue-600' },
+    { label: 'Receita Mensal', value: `R$ ${overview.monthlyRevenue.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`, change: '+32%', icon: DollarSign, color: 'from-green-500 to-green-600' },
+    { label: 'Transações', value: overview.totalTransactions.toLocaleString(), change: '+24%', icon: CreditCard, color: 'from-purple-500 to-purple-600' },
+    { label: 'Taxa Conversão', value: `${overview.conversionRate}%`, change: '+3%', icon: TrendingUp, color: 'from-orange-500 to-orange-600' },
+  ] : []
 
   const systemAlerts = [
     { id: 1, type: 'warning', message: 'Alta taxa de falha nos cards internacionais', time: '5 min atrás' },
@@ -86,19 +120,144 @@ export default function AdminPanel() {
     { id: 'settings', label: 'Configurações', icon: Settings },
   ]
 
-  const handleUserAction = (userId, action) => {
-    switch (action) {
-      case 'view':
-        console.log('View user:', userId)
-        break
-      case 'suspend':
-        console.log('Suspend user:', userId)
-        break
-      case 'activate':
-        console.log('Activate user:', userId)
-        break
-      default:
-        break
+  const handleUserAction = async (userId, action) => {
+    try {
+      switch (action) {
+        case 'view':
+          console.log('View user:', userId)
+          // Implementar modal de detalhes do usuário
+          break
+        case 'suspend':
+          await adminService.updateUserStatus(userId, 'suspended')
+          await loadAdminData()
+          break
+        case 'activate':
+          await adminService.updateUserStatus(userId, 'active')
+          await loadAdminData()
+          break
+        case 'block':
+          await adminService.updateUserStatus(userId, 'blocked')
+          await loadAdminData()
+          break
+        case 'upgrade':
+          await adminService.updateUserPlan(userId, 'enterprise')
+          await loadAdminData()
+          break
+        case 'delete':
+          if (confirm('Tem certeza que deseja excluir este usuário?')) {
+            await adminService.deleteUser(userId)
+            await loadAdminData()
+          }
+          break
+        default:
+          console.log('Unknown action:', action, userId)
+      }
+    } catch (error) {
+      console.error('Erro na ação do usuário:', error)
+      alert('Erro ao executar ação. Tente novamente.')
+    }
+  }
+
+  const handleBulkAction = async (action) => {
+    if (selectedUsers.length === 0) {
+      alert('Selecione pelo menos um usuário')
+      return
+    }
+
+    try {
+      switch (action) {
+        case 'suspend':
+          for (const userId of selectedUsers) {
+            await adminService.updateUserStatus(userId, 'suspended')
+          }
+          break
+        case 'activate':
+          for (const userId of selectedUsers) {
+            await adminService.updateUserStatus(userId, 'active')
+          }
+          break
+        case 'delete':
+          if (confirm(`Tem certeza que deseja excluir ${selectedUsers.length} usuários?`)) {
+            for (const userId of selectedUsers) {
+              await adminService.deleteUser(userId)
+            }
+          }
+          break
+        default:
+          console.log('Unknown bulk action:', action)
+      }
+      setSelectedUsers([])
+      await loadAdminData()
+    } catch (error) {
+      console.error('Erro na ação em massa:', error)
+      alert('Erro ao executar ação em massa. Tente novamente.')
+    }
+  }
+
+  const handleSystemAction = async (action) => {
+    try {
+      switch (action) {
+        case 'backup':
+          alert('Backup iniciado com sucesso!')
+          break
+        case 'maintenance':
+          alert('Modo manutenção ativado!')
+          break
+        case 'restart':
+          if (confirm('Tem certeza que deseja reiniciar o sistema?')) {
+            alert('Sistema reiniciado com sucesso!')
+          }
+          break
+        default:
+          console.log('Unknown system action:', action)
+      }
+    } catch (error) {
+      console.error('Erro na ação do sistema:', error)
+      alert('Erro ao executar ação do sistema. Tente novamente.')
+    }
+  }
+
+  const handleTransactionAction = async (transactionId, action) => {
+    try {
+      switch (action) {
+        case 'approve':
+          await adminService.updateTransactionStatus(transactionId, 'completed')
+          await loadAdminData()
+          break
+        case 'reject':
+          await adminService.updateTransactionStatus(transactionId, 'failed')
+          await loadAdminData()
+          break
+        default:
+          console.log('Unknown action:', action, transactionId)
+      }
+    } catch (error) {
+      console.error('Erro na ação da transação:', error)
+      setError('Não foi possível realizar esta ação')
+    }
+  }
+
+  const handleGenerateReport = async (type) => {
+    try {
+      const report = await adminService.generateReport(type, {
+        from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 dias atrás
+        to: new Date()
+      })
+      
+      // Download do relatório (simulação)
+      const dataStr = JSON.stringify(report, null, 2)
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr)
+      
+      const exportFileDefaultName = `relatorio-${type}-${Date.now()}.json`
+      
+      const linkElement = document.createElement('a')
+      linkElement.setAttribute('href', dataUri)
+      linkElement.setAttribute('download', exportFileDefaultName)
+      linkElement.click()
+      
+    } catch (error) {
+      console.error('Erro ao gerar relatório:', error)
+      setError('Não foi possível gerar o relatório')
     }
   }
 

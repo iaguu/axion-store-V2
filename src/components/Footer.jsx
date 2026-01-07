@@ -5,13 +5,7 @@ export default function Footer() {
   const navigate = useNavigate()
 
   const handleAdminAccess = () => {
-    // Simula acesso admin (em produção, verificaria permissões reais)
-    localStorage.setItem('isAdmin', 'true')
-    localStorage.setItem('admin', JSON.stringify({
-      name: 'Admin User',
-      email: 'admin@axionstore.com',
-      role: 'administrator'
-    }))
+    // Redireciona para página de login admin
     navigate('/admin')
   }
 

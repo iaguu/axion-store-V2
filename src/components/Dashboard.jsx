@@ -37,7 +37,6 @@ import Checkout from './Checkout'
 import QuickCheckout from './QuickCheckout'
 import { getProductsByCategory } from '../data/products'
 import dashboardService from '../services/dashboardService'
-import localDB from '../services/localDB'
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -379,29 +378,29 @@ export default function Dashboard() {
                   {[
                     {
                       label: 'Cards Ativos',
-                      value: stats.cardsActive.toString(),
-                      change: stats.cardsActive > 0 ? '+12%' : '0%',
+                      value: (stats.cardsActive || 0).toString(),
+                      change: (stats.cardsActive || 0) > 0 ? '+12%' : '0%',
                       icon: CreditCard,
                       color: 'from-green-500 to-green-600'
                     },
                     {
                       label: 'Receita Mensal',
-                      value: `R$ ${stats.monthlyRevenue.toFixed(2)}`,
-                      change: stats.monthlyRevenue > 0 ? '+23%' : '0%',
+                      value: `R$ ${(stats.monthlyRevenue || 0).toFixed(2)}`,
+                      change: (stats.monthlyRevenue || 0) > 0 ? '+23%' : '0%',
                       icon: DollarSign,
                       color: 'from-blue-500 to-blue-600'
                     },
                     {
                       label: 'Taxa Sucesso',
-                      value: `${stats.successRate}%`,
-                      change: stats.successRate > 0 ? '+2%' : '0%',
+                      value: `${stats.successRate || 0}%`,
+                      change: (stats.successRate || 0) > 0 ? '+2%' : '0%',
                       icon: CheckCircle,
                       color: 'from-purple-500 to-purple-600'
                     },
                     {
                       label: 'Operações/hora',
-                      value: stats.operationsPerHour,
-                      change: stats.operationsPerHour > 0 ? '+5%' : '0%',
+                      value: stats.operationsPerHour || 0,
+                      change: (stats.operationsPerHour || 0) > 0 ? '+5%' : '0%',
                       icon: Activity,
                       color: 'from-orange-500 to-orange-600'
                     }

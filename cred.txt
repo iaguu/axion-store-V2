@@ -1,0 +1,4 @@
+admin_username=axion_admin_2024
+admin_password=AxionSecure@2024!#$
+admin_email=admin@axionstore.com
+admin_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJheGlvbl9hZG1pbl8yMDI0IiwiaWF0IjoxNzM2MTYwNDAwLCJleHAiOjk5OTk5OTk5OTl9

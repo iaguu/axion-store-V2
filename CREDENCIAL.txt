@@ -1,0 +1,23 @@
+// Credenciais de Acesso - NÃO COMPARTILHAR ESTE ARQUIVO
+// Gerado em: 06/01/2026
+
+// CREDENCIAL ADMIN MASTER
+// ========================
+// URL: https://axion-store-v2.vercel.app/admin
+// USUÁRIO: admin@axionstore.com
+// SENHA: AxionMaster@2026!#%
+
+// CREDENCIAL USUÁRIO TESTE
+// ========================
+// URL: https://axion-store-v2.vercel.app/login
+// USUÁRIO: user@test.com
+// SENHA: TestUser@2026
+
+// INSTRUÇÕES:
+// 1. O painel admin está acessível via /admin
+// 2. Faça login com as credenciais acima
+// 3. O sistema tem controle total de usuários, transações e configurações
+// 4. Mantenha este arquivo seguro e não compartilhe
+
+// TOKEN API PARA INTEGRAÇÃO:
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFkbWluLTAwMSIsIm5hbWUiOiJBZG1pbiBVc2VyIiwiZW1haWwiOiJhZG1pbkBheGlvbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Njc3NDAxNDUsImV4cCI6MTc2NzgyNjU0NSwiYXVkIjoiYXhpb24tY2xpZW50cyIsImlzcyI6ImF4aW9uLWRhdGEtYXBpIn0.Fz5_B2kX2QApMq_fHINBsjZvlKsw2x3XC3Qvf7LqNIM
